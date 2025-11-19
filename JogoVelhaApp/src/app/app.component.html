@@ -1,0 +1,50 @@
+<h1>Jogo da Velha</h1>
+
+<!-- botão principal -->
+<button *ngIf="!askNames" (click)="startFlow()">Novo Jogo</button>
+
+<!-- diálogo de nomes -->
+<div class="overlay" *ngIf="askNames" aria-modal="true">
+  <div class="dialog">
+    <h3>Quem vai jogar?</h3>
+    <label>
+      Nome do X
+      <input type="text" [(ngModel)]="playerX" placeholder="Jogador X">
+    </label>
+
+    <label>
+      Nome do O
+      <input type="text" [(ngModel)]="playerO" placeholder="Jogador O">
+    </label>
+
+    <div class="actions">
+      <button (click)="confirmNames()">Começar</button>
+      <button class="ghost" (click)="cancelNames()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- tabuleiro -->
+<div class="stage" [class.dimmed]="askNames">
+  <div *ngIf="game" class="board">
+    <div class="cell" *ngFor="let cell of game.board; index as i" (click)="play(i)"
+      [class.disabled]="(game.status !== 'InProgress' && game.status !== null) || (cell !== ' ' && cell !== '' && cell != null)">
+      {{ (cell === ' ' || cell === '' || cell == null) ? '' : cell }}
+    </div>
+  </div>
+
+  <p class="status">{{ labelStatus(game) }}</p>
+
+  <div class="results">
+    <h3>Últimos vencedores</h3>
+    <ul *ngIf="results?.length; else semResultados">
+      <li *ngFor="let r of results">
+        <strong>{{ r.vencedor }}</strong>
+        <span>— {{ r.dataHora | date:'short' }}</span>
+      </li>
+    </ul>
+    <ng-template #semResultados>
+      <p>Nenhum resultado ainda.</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div *ngIf="game" class="board">
+    <div
+      class="cell"
+      *ngFor="let cell of game.board; index as i"
+      (click)="play(i)"
+      [class.disabled]="game.status !== 'InProgress' || cell !== ' '">
+      {{ cell === ' ' ? '' : cell }}
+    </div>
+  </div>
+  
